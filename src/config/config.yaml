@@ -1,0 +1,15 @@
+paths:
+  bronze: data/bronze
+  silver: data/silver
+  gold: data/gold
+  logs: logs
+
+processing:
+  batch_size: 1000
+  max_retries: 3
+  retry_delay: 1
+
+logging:
+  level: INFO
+  format: "%(asctime)s - %(levelname)s - %(message)s"
+  file: logs/pipeline.log

@@ -30,7 +30,7 @@ def combine_files_by_table_name(file_paths):
         dict: A dictionary where keys are table names and values are lists of
               combined data from files belonging to that table.
     """
-    logging.info("Combining files by table name")
+    logging.debug("Combining files by table name")
     combined_data = {}
     for file_path in file_paths:
         table_name = get_name_from_path(file_path)
@@ -55,13 +55,13 @@ def get_name_from_path(file_path):
     Returns:
         str: The guessed table name, or None if not found.
     """
-    logging.info(f"Guessing table name from file path: {file_path}")
+    logging.debug(f"Guessing table name from file path: {file_path}")
     guessed_table_name = None
     for table_name in DATA_TABLE_NAMES:
         if table_name in file_path.name:
             guessed_table_name = table_name
             break
-    logging.info(f"Guessed table name: {guessed_table_name}")
+    logging.debug(f"Guessed table name: {guessed_table_name}")
     return guessed_table_name
 
 
@@ -98,7 +98,7 @@ def read_rows(file_path, encoding):
             else:
                 invalid_rows.append({"row": row, "error": error})
 
-    logging.info(
+    logging.debug(
         f"Finished reading rows from CSV file: {file_path} in {time.time() - time_st} seconds"
     )
     return {"valid_rows": valid_rows, "invalid_rows": invalid_rows}
@@ -168,7 +168,7 @@ def read_json(file_path, encoding):
             else:
                 invalid_rows.append({"row": row, "error": error})
 
-        logging.info(
+        logging.debug(
             f"Finished reading JSON file: {file_path} in {time.time() - time_st} seconds"
         )
         return {"valid_rows": valid_rows, "invalid_rows": invalid_rows}
@@ -219,13 +219,13 @@ def get_encoding(file_path: Path):
     Returns:
         str: The detected encoding of the file.
     """
-    logging.info(f"Detecting encoding for file: {file_path}")
+    logging.debug(f"Detecting encoding for file: {file_path}")
 
     with file_path.open("rb") as file:
         result = charset_normalizer.detect(file.read(10000))
 
         encoding = result["encoding"]
-        logging.info(f"Detected encoding: {encoding}")
+        logging.debug(f"Detected encoding: {encoding}")
         return encoding
 
 
@@ -267,7 +267,7 @@ def process_file(file_path):
         dict: A dictionary containing the processed data from the file.
               The structure of the dictionary depends on the file type.
     """
-    logging.info(f"Processing file: {file_path}")
+    logging.debug(f"Processing file: {file_path}")
     encoding = get_encoding(file_path)
     # table_name = get_name_from_path(file_path)
 
@@ -281,7 +281,7 @@ def process_file(file_path):
         logging.error(message)
         raise Exception(message)
 
-    logging.info(f"Finished processing file: {file_path}")
+    logging.debug(f"Finished processing file: {file_path}")
     return reader
 
 
@@ -294,7 +294,6 @@ def save_to_json(data, output_file, encoding="utf-8"):
         output_file (str): The path to the output JSON file.
         encoding (str, optional): The encoding for the output file. Defaults to 'utf-8'.
     """
-    logging.info(f"Saving data to JSON file: {output_file}")
 
     with open(output_file, "w", encoding=encoding) as file:
         json.dump(data, file, indent=4)

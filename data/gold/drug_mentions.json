@@ -1,0 +1,101 @@
+[
+    {
+        "drug": "6302001",
+        "pubmed": [
+            {
+                "id": 9,
+                "date": "01/01/2020"
+            }
+        ],
+        "journal": [
+            {
+                "name": "Journal of photochemistry and photobiology. B, Biology",
+                "date": "01/01/2020"
+            }
+        ]
+    },
+    {
+        "drug": "R01AD",
+        "pubmed": [
+            {
+                "id": 10,
+                "date": "01/01/2020"
+            },
+            {
+                "id": "11",
+                "date": "01/01/2020"
+            }
+        ],
+        "journal": [
+            {
+                "name": "The journal of maternal-fetal & neonatal medicine",
+                "date": "01/01/2020"
+            },
+            {
+                "name": "Journal of back and musculoskeletal rehabilitation",
+                "date": "01/01/2020"
+            }
+        ]
+    },
+    {
+        "drug": "A04AD",
+        "pubmed": [
+            {
+                "id": "NCT01967433",
+                "date": "1 January 2020"
+            },
+            {
+                "id": "NCT04189588",
+                "date": "1 January 2020"
+            },
+            {
+                "id": "NCT04237091",
+                "date": "1 January 2020"
+            }
+        ],
+        "journal": [
+            {
+                "name": "Journal of emergency nursing",
+                "date": "1 January 2020"
+            },
+            {
+                "name": "Journal of emergency nursing",
+                "date": "1 January 2020"
+            },
+            {
+                "name": "Journal of emergency nursing",
+                "date": "1 January 2020"
+            }
+        ]
+    },
+    {
+        "drug": "A01AD",
+        "pubmed": [
+            {
+                "id": "NCT04188184",
+                "date": "27 April 2020"
+            }
+        ],
+        "journal": [
+            {
+                "name": "Journal of emergency nursing\\xc3\\x28",
+                "date": "27 April 2020"
+            }
+        ]
+    },
+    {
+        "drug": "R01AD",
+        "pubmed": [
+            {
+                "id": "NCT04153396",
+                "date": "1 January 2020"
+            }
+        ],
+        "journal": [
+            {
+                "name": "H\u00f4pitaux Universitaires de Gen\u00e8ve",
+                "date": "1 January 2020"
+            }
+        ]
+    }
+]

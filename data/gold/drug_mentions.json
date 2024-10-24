@@ -1,45 +1,7 @@
 [
     {
-        "drug": "6302001",
-        "pubmed": [
-            {
-                "id": 9,
-                "date": "01/01/2020"
-            }
-        ],
-        "journal": [
-            {
-                "name": "Journal of photochemistry and photobiology. B, Biology",
-                "date": "01/01/2020"
-            }
-        ]
-    },
-    {
-        "drug": "R01AD",
-        "pubmed": [
-            {
-                "id": 10,
-                "date": "01/01/2020"
-            },
-            {
-                "id": "11",
-                "date": "01/01/2020"
-            }
-        ],
-        "journal": [
-            {
-                "name": "The journal of maternal-fetal & neonatal medicine",
-                "date": "01/01/2020"
-            },
-            {
-                "name": "Journal of back and musculoskeletal rehabilitation",
-                "date": "01/01/2020"
-            }
-        ]
-    },
-    {
         "drug": "A04AD",
-        "pubmed": [
+        "clinical_trials": [
             {
                 "id": "NCT01967433",
                 "date": "1 January 2020"
@@ -56,21 +18,81 @@
         "journal": [
             {
                 "name": "Journal of emergency nursing",
-                "date": "1 January 2020"
+                "date": "01/01/2019"
             },
             {
                 "name": "Journal of emergency nursing",
-                "date": "1 January 2020"
+                "date": "01/01/2019"
             },
             {
-                "name": "Journal of emergency nursing",
-                "date": "1 January 2020"
+                "name": "The Journal of pediatrics",
+                "date": "02/01/2019"
+            }
+        ],
+        "pubmed": [
+            {
+                "id": "1",
+                "date": "01/01/2019"
+            },
+            {
+                "id": "2",
+                "date": "01/01/2019"
+            },
+            {
+                "id": "3",
+                "date": "02/01/2019"
+            }
+        ]
+    },
+    {
+        "drug": "S03AA",
+        "pubmed": [
+            {
+                "id": "4",
+                "date": "01/01/2020"
+            },
+            {
+                "id": "5",
+                "date": "02/01/2020"
+            },
+            {
+                "id": "6",
+                "date": "2020-01-01"
+            }
+        ],
+        "journal": [
+            {
+                "name": "Journal of food protection",
+                "date": "01/01/2020"
+            },
+            {
+                "name": "American journal of veterinary research",
+                "date": "02/01/2020"
+            },
+            {
+                "name": "Psychopharmacology",
+                "date": "2020-01-01"
+            }
+        ]
+    },
+    {
+        "drug": "V03AB",
+        "pubmed": [
+            {
+                "id": "6",
+                "date": "2020-01-01"
+            }
+        ],
+        "journal": [
+            {
+                "name": "Psychopharmacology",
+                "date": "2020-01-01"
             }
         ]
     },
     {
         "drug": "A01AD",
-        "pubmed": [
+        "clinical_trials": [
             {
                 "id": "NCT04188184",
                 "date": "27 April 2020"
@@ -78,14 +100,43 @@
         ],
         "journal": [
             {
-                "name": "Journal of emergency nursing\\xc3\\x28",
-                "date": "27 April 2020"
+                "name": "The journal of allergy and clinical immunology. In practice",
+                "date": "01/02/2020"
+            },
+            {
+                "name": "The journal of allergy and clinical immunology. In practice",
+                "date": "01/03/2020"
+            }
+        ],
+        "pubmed": [
+            {
+                "id": "7",
+                "date": "01/02/2020"
+            },
+            {
+                "id": "8",
+                "date": "01/03/2020"
+            }
+        ]
+    },
+    {
+        "drug": "6302001",
+        "pubmed": [
+            {
+                "id": 9,
+                "date": "01/01/2020"
+            }
+        ],
+        "journal": [
+            {
+                "name": "Journal of photochemistry and photobiology. B, Biology",
+                "date": "01/01/2020"
             }
         ]
     },
     {
         "drug": "R01AD",
-        "pubmed": [
+        "clinical_trials": [
             {
                 "id": "NCT04153396",
                 "date": "1 January 2020"
@@ -93,8 +144,22 @@
         ],
         "journal": [
             {
-                "name": "H\u00f4pitaux Universitaires de Gen\u00e8ve",
-                "date": "1 January 2020"
+                "name": "The journal of maternal-fetal & neonatal medicine",
+                "date": "01/01/2020"
+            },
+            {
+                "name": "Journal of back and musculoskeletal rehabilitation",
+                "date": "01/01/2020"
+            }
+        ],
+        "pubmed": [
+            {
+                "id": 10,
+                "date": "01/01/2020"
+            },
+            {
+                "id": "11",
+                "date": "01/01/2020"
             }
         ]
     }

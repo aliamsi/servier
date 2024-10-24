@@ -6,13 +6,44 @@ from pathlib import Path
 import charset_normalizer
 from typing import List
 import logging
+import os
+from datetime import datetime
 
-from src.utils.constants import SCHEMA
+
+from src.utils.constants import SCHEMA, DATA_TABLE_NAMES
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
-DATA_TABLE_NAMES: List[str] = ['drugs', 'clinical_trials', "pubmed"]
+
+def combine_files_by_table_name(file_paths):
+    """
+    Takes a list of file paths, guesses the table name for each file,
+    and combines files with the same table name.
+
+    Args:
+        file_paths (list): A list of file paths.
+
+    Returns:
+        dict: A dictionary where keys are table names and values are lists of
+              combined data from files belonging to that table.
+    """
+    logging.info("Combining files by table name")
+    combined_data = {}
+    for file_path in file_paths:
+        table_name = get_name_from_path(file_path)
+        if table_name:
+            if table_name not in combined_data:
+                combined_data[table_name] = {"valid_rows": [], "invalid_rows": []}
+            processed_file = process_file(file_path)
+            combined_data[table_name]["valid_rows"].extend(processed_file["valid_rows"])
+            combined_data[table_name]["invalid_rows"].extend(
+                processed_file["invalid_rows"]
+            )
+    return combined_data
+
 
 def get_name_from_path(file_path):
     """
@@ -49,33 +80,31 @@ def read_rows(file_path, encoding):
                                and includes the error message.
     """
     logging.info(f"Reading rows from CSV file: {file_path}")
-    
+
     time_st = time.time()
     valid_rows = []
     invalid_rows = []
-    
+
     table_name = get_name_from_path(file_path)
-    
+
     with file_path.open(newline="", encoding=encoding) as filename:
         reader = csv.DictReader(filename)
-        
+
         for row in reader:
             is_valid, error = check_row(SCHEMA[table_name], row)
-            
+
             if is_valid:
                 valid_rows.append(row)
             else:
-                invalid_rows.append({'row': row, 'error': error})
-        
-    logging.info(f"Finished reading rows from CSV file: {file_path} in {time.time() - time_st} seconds")
-    return {
-        'valid_rows': valid_rows,
-        'invalid_rows': invalid_rows
-    }
+                invalid_rows.append({"row": row, "error": error})
+
+    logging.info(
+        f"Finished reading rows from CSV file: {file_path} in {time.time() - time_st} seconds"
+    )
+    return {"valid_rows": valid_rows, "invalid_rows": invalid_rows}
 
 
-
-def json_handler(file_path, encoding):
+def json_handler(file_path):
     """
     Handles JSON file reading and attempts to correct common JSON errors.
 
@@ -88,11 +117,11 @@ def json_handler(file_path, encoding):
     """
     logging.info(f"Reading JSON file: {file_path}")
     rows = []
-    with file_path.open("r", encoding=encoding) as filename:
+    with file_path.open("r", encoding="utf-8") as filename:
         content = filename.read()
         # Try to fix common JSON error of trailing commas
-        json_string = re.sub(r',\s*(\}|\])', r'\1', content)
-        
+        json_string = re.sub(r",\s*(\}|\])", r"\1", content)
+
     try:
         output = json.loads(json_string)
     except json.JSONDecodeError as e:
@@ -100,6 +129,7 @@ def json_handler(file_path, encoding):
         raise  # Re-raise the exception after logging
 
     return output
+
 
 def read_json(file_path, encoding):
     """
@@ -116,33 +146,32 @@ def read_json(file_path, encoding):
                                and includes the error message.
     """
     logging.info(f"Reading JSON file: {file_path}")
-    
+
     time_st = time.time()
     valid_rows = []
     invalid_rows = []
 
     table_name = get_name_from_path(file_path)
-    
+
     with file_path.open(newline="", encoding=encoding) as filename:
         try:
             output = json.load(filename)
         except json.JSONDecodeError as e:
             logging.warning(f"Encountered JSONDecodeError: {e}. Attempting to fix...")
-            output = json_handler(file_path, encoding)
+            output = json_handler(file_path)
 
         for row in output:
             is_valid, error = check_row(SCHEMA[table_name], row)
-            
+
             if is_valid:
                 valid_rows.append(row)
             else:
-                invalid_rows.append({'row': row, 'error': error})
-        
-        logging.info(f"Finished reading JSON file: {file_path} in {time.time() - time_st} seconds")
-        return {
-            'valid_rows': valid_rows,
-            'invalid_rows': invalid_rows
-        }
+                invalid_rows.append({"row": row, "error": error})
+
+        logging.info(
+            f"Finished reading JSON file: {file_path} in {time.time() - time_st} seconds"
+        )
+        return {"valid_rows": valid_rows, "invalid_rows": invalid_rows}
 
 
 def check_row(schema, row):
@@ -160,8 +189,11 @@ def check_row(schema, row):
                - error (str): An error message if the row is invalid, otherwise None.
     """
     if len(row) != len(schema):
-        return False, f"Incorrect number of columns. Expected {len(schema)}, found {len(row)}."
-    
+        return (
+            False,
+            f"Incorrect number of columns. Expected {len(schema)}, found {len(row)}.",
+        )
+
     for col, expected_type in schema.items():
         value = row.get(col, None)
         try:
@@ -169,8 +201,11 @@ def check_row(schema, row):
                 # Attempt to convert the value if it's not of the correct type
                 expected_type(value)
         except (ValueError, TypeError):
-            return False, f"Incorrect type for column '{col}'. Expected {expected_type}, found {type(value)}."
-    
+            return (
+                False,
+                f"Incorrect type for column '{col}'. Expected {expected_type}, found {type(value)}.",
+            )
+
     return True, None
 
 
@@ -185,7 +220,7 @@ def get_encoding(file_path: Path):
         str: The detected encoding of the file.
     """
     logging.info(f"Detecting encoding for file: {file_path}")
-    
+
     with file_path.open("rb") as file:
         result = charset_normalizer.detect(file.read(10000))
 
@@ -204,7 +239,7 @@ def is_csv(file_path: Path) -> bool:
     Returns:
         bool: True if the file has a '.csv' extension, False otherwise.
     """
-    return file_path.suffix == '.csv'
+    return file_path.suffix == ".csv"
 
 
 def is_json(file_path: Path) -> bool:
@@ -217,7 +252,7 @@ def is_json(file_path: Path) -> bool:
     Returns:
         bool: True if the file has a '.json' extension, False otherwise.
     """
-    return file_path.suffix == '.json'
+    return file_path.suffix == ".json"
 
 
 def process_file(file_path):
@@ -235,23 +270,22 @@ def process_file(file_path):
     logging.info(f"Processing file: {file_path}")
     encoding = get_encoding(file_path)
     # table_name = get_name_from_path(file_path)
-    
 
     if is_csv(file_path):
         reader = read_rows(file_path, encoding)
-    
+
     elif is_json(file_path):
         reader = read_json(file_path, encoding)
     else:
         message = "File extension must be either CSV or JSON."
         logging.error(message)
         raise Exception(message)
-    
+
     logging.info(f"Finished processing file: {file_path}")
     return reader
 
 
-def save_to_json(data, output_file, encoding='utf-8'):
+def save_to_json(data, output_file, encoding="utf-8"):
     """
     Save data to a JSON file.
 
@@ -261,8 +295,8 @@ def save_to_json(data, output_file, encoding='utf-8'):
         encoding (str, optional): The encoding for the output file. Defaults to 'utf-8'.
     """
     logging.info(f"Saving data to JSON file: {output_file}")
-    
-    with open(output_file, 'w', encoding=encoding) as file:
+
+    with open(output_file, "w", encoding=encoding) as file:
         json.dump(data, file, indent=4)
-    
+
     logging.info(f"Data saved to JSON file: {output_file}")

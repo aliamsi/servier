@@ -1,0 +1,8 @@
+{
+    "name": "Psychopharmacology",
+    "drug_count": 2,
+    "drugs": [
+        "S03AA",
+        "V03AB"
+    ]
+}
